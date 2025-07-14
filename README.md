@@ -4,7 +4,9 @@
 
 Step 1:
   - Initialize a project named "web-apps" using uv.
+   ```
     uv init web-apps
+  ``` 
   - Install Django
     uv add Django
     It will install and add django in pyproject.toml
