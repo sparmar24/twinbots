@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+
+  web:
+    build:
+      context: .
+      dockerfile: Containerfile
+    command: uv run web-apps/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: mydb
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+      DB_HOST: db
+      DB_PORT: 5432
+volumes:
+  postgres_data:
+
