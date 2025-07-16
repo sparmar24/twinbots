@@ -18,7 +18,8 @@ provider "azurerm" {
 }
 provider "azapi" {
 }
-
+ 
+# Create resource group 
 resource "azurerm_resource_group" "rg_twinbots" {
   name     = "rg_twinbots"
   location = "West Europe"
@@ -26,9 +27,10 @@ resource "azurerm_resource_group" "rg_twinbots" {
 
 # Register the Microsoft.Kubernetes provider if not already registered
 resource "azurerm_resource_provider_registration" "k8s" {
- name = "Microsoft.ContainerService"
+  name = "Microsoft.ContainerService"
 }
 
+# Create AKS Cluster
 resource "azurerm_kubernetes_cluster" "akc_twinbots" {
   name                         = "akc_twinbots"
   resource_group_name          = azurerm_resource_group.rg_twinbots.name
@@ -43,6 +45,19 @@ resource "azurerm_kubernetes_cluster" "akc_twinbots" {
   identity {
     type = "SystemAssigned"
   }
+
+  tags = {
+    ENV = "Test"
+  }
+}
+
+# Create an Azure Container Registry (ACR)
+resource "azurerm_container_registry" "acr_twinbots" {
+  name                = "acrtwinbots"
+  resource_group_name = azurerm_resource_group.rg_twinbots.name
+  location            = azurerm_resource_group.rg_twinbots.location
+  sku                 = "Basic"
+  admin_enabled       = false
 
   tags = {
     ENV = "Test"
