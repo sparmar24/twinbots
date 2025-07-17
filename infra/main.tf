@@ -1,11 +1,12 @@
 terraform {
+  required_version = ">= 1.12.2"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 4.36.0"
     }
     azapi = {
-      source = "azure/azapi"
+      source  = "azure/azapi"
       version = ">=2.5.0"
     }
   }
@@ -14,11 +15,11 @@ terraform {
 provider "azurerm" {
   features {}
   resource_provider_registrations = "none"
-  subscription_id = "5f220201-71db-4b78-b23f-ec5939d9aabf"
+  subscription_id                 = "5f220201-71db-4b78-b23f-ec5939d9aabf"
 }
 provider "azapi" {
 }
- 
+
 # Create resource group 
 resource "azurerm_resource_group" "rg_twinbots" {
   name     = "rg_twinbots"
@@ -45,10 +46,10 @@ resource "azurerm_container_registry" "acr_twinbots" {
 
 # Create AKS Cluster
 resource "azurerm_kubernetes_cluster" "akc_twinbots" {
-  name                         = "akc_twinbots"
-  resource_group_name          = azurerm_resource_group.rg_twinbots.name
-  location                     = azurerm_resource_group.rg_twinbots.location
-  dns_prefix                   = "exampleaks1"
+  name                = "akc_twinbots"
+  resource_group_name = azurerm_resource_group.rg_twinbots.name
+  location            = azurerm_resource_group.rg_twinbots.location
+  dns_prefix          = "exampleaks1"
   default_node_pool {
     name       = "default"
     node_count = 1
@@ -63,7 +64,7 @@ resource "azurerm_kubernetes_cluster" "akc_twinbots" {
     ENV = "Test"
   }
 
-# Attach ACR to AKS (so AKS can pull images)
+  # Attach ACR to AKS (so AKS can pull images)
   depends_on = [azurerm_container_registry.acr_twinbots, azurerm_kubernetes_cluster.akc_twinbots]
 }
 
