@@ -1,0 +1,17 @@
+[project]
+name = "simulated-conversations"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Sonia Parmar", email = "soniaparmar24@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+sim-conv = "simulated_conversations:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
