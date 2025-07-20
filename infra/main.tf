@@ -37,7 +37,7 @@ resource "azurerm_container_registry" "acr_twinbots" {
   resource_group_name = azurerm_resource_group.rg_twinbots.name
   location            = azurerm_resource_group.rg_twinbots.location
   sku                 = "Basic"
-  admin_enabled       = false
+  admin_enabled       = true
 
   tags = {
     ENV = "Test"
@@ -46,12 +46,20 @@ resource "azurerm_container_registry" "acr_twinbots" {
 
 # Create AKS Cluster
 resource "azurerm_kubernetes_cluster" "akc_twinbots" {
-  name                = "akc_twinbots"
-  resource_group_name = azurerm_resource_group.rg_twinbots.name
-  location            = azurerm_resource_group.rg_twinbots.location
-  dns_prefix          = "exampleaks1"
+  name                              = "akc_twinbots"
+  resource_group_name               = azurerm_resource_group.rg_twinbots.name
+  location                          = azurerm_resource_group.rg_twinbots.location
+  dns_prefix                        = "exampleaks1"
+  role_based_access_control_enabled = true
+
   default_node_pool {
-    name       = "default"
+    name = "default"
+    tags = {}
+    upgrade_settings {
+      drain_timeout_in_minutes      = 0
+      max_surge                     = "10%"
+      node_soak_duration_in_minutes = 0
+    }
     node_count = 1
     vm_size    = "Standard_B2s"
   }
@@ -76,3 +84,35 @@ resource "azurerm_role_assignment" "acr_pull" {
   depends_on           = [azurerm_kubernetes_cluster.akc_twinbots]
 }
 
+# Create Azure Key Vault
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault" "kv_twinbots" {
+  name                       = "kv-twinbots"
+  location                   = azurerm_resource_group.rg_twinbots.location
+  resource_group_name        = azurerm_resource_group.rg_twinbots.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = true
+
+  network_acls {
+    bypass         = "AzureServices"
+    default_action = "Allow"
+  }
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "Get",
+      "List",
+    ]
+
+    secret_permissions = [
+      "Get",
+      "List",
+    ]
+  }
+
+}
