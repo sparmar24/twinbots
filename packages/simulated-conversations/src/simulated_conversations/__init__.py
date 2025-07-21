@@ -37,13 +37,8 @@ def chatbotB(user_message) -> str:
 
 
 def conversation():
-    # print("Chatbot A:")
     response_a = chatbotA()
-    # print(response_a)
-
-    # print("\nChatbot B:")
     response_b = chatbotB(response_a)
-    # print(response_b)
     return response_b
 
 
