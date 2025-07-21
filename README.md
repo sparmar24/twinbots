@@ -2,6 +2,7 @@
 
 
 Step 1:
+-------
   - Initialize a project named "web-apps" using uv.
    ```shell
     uv init web-apps
@@ -41,6 +42,7 @@ source .envrc
 ```
 
 Step 2:
+-------
   - Create an azure account with free plan. and login through terminal.
   ```shell 
   az login```
@@ -95,21 +97,23 @@ Step 2:
   - It will run django app inside the cluster and tells kubernetes about which docker image (the one pushed to ACR) to run.
   how many copies/replicas of the app need to run. And about ports to expose inside the pod/virtual machine.
 
-2) django-service.yml
+1) django-service.yml
   - Service file exposes the django app inside the cluster to make it accessible to other app such as, postgres
 
-3) postgres-deployment.yml
+1) postgres-deployment.yml
   - The deployment file sets up the database with environment variables.
 
-4) postgres-service.yml
+1) postgres-service.yml
   - This service file will expose Postgres to other services, exp: Django app
 
-5) ingress.yml
+1) ingress.yml
   - It exposes the app to the internet.
 
 To route traffic to Django app, we need NGINX Ingress controller on AKS(Azure Kubernetes Service).
 
-Step 3: Create a chatbot who asks the three favourite foods.
+Step 3:
+-------
+Create a chatbot who asks the three favourite foods.
 
   - Create new app named chatbot using
   ```shell
@@ -129,7 +133,10 @@ Step 3: Create a chatbot who asks the three favourite foods.
   - Add chatbot urls to coresite/urls.py.
 
  
- Step 4: Simulate conversation between two chatbots where "chatbotA" will question to "chatbotB" about what are your three favourite foods are.
+ Step 4: 
+--------
+ Simulate conversation between two chatbots where "chatbotA" will question to "chatbotB" about what are your three favourite foods are.
+
   Create a python package for this part via.
 ```shell
   uv init --package packages/simulated-conversations
@@ -164,4 +171,5 @@ check tables and database.
 
 
 Step 5: 
+-------
 
