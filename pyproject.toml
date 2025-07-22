@@ -5,10 +5,25 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "dbt-core>=1.10.5",
+    "dbt-postgres>=1.9.0",
     "django>=5.2.4",
     "openai>=1.97.0",
+    "pre-commit>=4.2.0",
     "psycopg[binary]>=3.2.9",
 ]
+
+[tool.sqlfluff.core]
+templater = "jinja"
+dialect = "postgres"
+ignore = "templating"
+large_file_skip_byte_limit = 0
+# The rules "structure.column_order" and "references.qualification" are temporarily disabled
+exclude_rules = ["layout.indent", "layout.cte_bracket", "layout.select_targets", "layout.spacing", "structure.column_order"]
+
+[tool.sqlfluff.rules]
+capitalisation_policy = "lower"
+extended_capitalisation_policy = "lower"
 
 [tool.uv.workspace]
 members = [

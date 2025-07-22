@@ -1,0 +1,12 @@
+dbt_chatbots:
+  outputs:
+    dev:
+      dbname: mydb
+      host: db
+      pass: mypassword
+      port: 5432
+      schema: public
+      threads: 2
+      type: postgres
+      user: myuser
+  target: dev
