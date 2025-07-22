@@ -21,7 +21,7 @@ def chatbotA() -> str:
         "You are a chatbot conducting a survey."
         "You are going door to door and asking persons about there favourite foods."
     )
-    user_message = "Please ask me what my three favourite foods are."
+    user_message = "You are starting the conversation. Simply ask the person what their three favourite foods are."
     return bot_response(instructions, user_message)
 
 
@@ -31,6 +31,10 @@ def chatbotB(user_message) -> str:
         "You could be a vegetarian or a non-vegetarian or a vegan or just anyone."
         "Be concise in your answer."
         "Also specify if you are a vegetarian or a non-vegetarian or a vegan."
+        "For example, you can say, 'vegetarian: food1, food2, food3."
+        "Or, 'vegan: food1, food2, food3."
+        "Or, 'non-vegetarian: food1, food2, food3."
+        "Etc."
     )
     # user_message = "What are your three favourite foods?"
     return bot_response(instructions, user_message)
@@ -43,8 +47,7 @@ def conversation():
 
 
 def main():
-    for i in range(10):
-        print(f"\nConversation {i + 1}:")
+    for i in range(100):
         answer = conversation()
 
         conn = psycopg.connect(

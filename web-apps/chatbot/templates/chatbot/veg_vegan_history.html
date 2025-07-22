@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chatbot - Favorite Foods</title>
+    <title>Chatbot - Top three favorite Foods</title>
     <style>
         body {
             background-color: #121212;
@@ -15,16 +15,6 @@
             padding: 8px;
             width: 70%;
         }
-        button {
-            background-color: #333;
-            color: #ffffff;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #444;
-        }
         form {
             margin-top: 20px;
         }
@@ -35,18 +25,19 @@
             color: #90caf9;
         }
     </style>
+
 </head>
 <body>
-    <h2>Favorite Foods Chatbot</h2>
+    <h2>vegetarian or vegan</h2>
     <div>
-        {% for msg in bot_responses %}
+        {% for msg in chat_history %}
             <p><strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}</p>
         {% endfor %}
     </div>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="user_input" placeholder="Type your message..." required>
-        <button type="submit">Send</button>
-    </form>
+    <!-- <form method="POST"> -->
+    <!--     {% csrf_token %} -->
+    <!--     <input type="text" name="user_input" placeholder="Type your message..." required> -->
+    <!--     <button type="submit">Send</button> -->
+    <!-- </form> -->
 </body>
 </html>

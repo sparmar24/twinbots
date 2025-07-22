@@ -3,6 +3,8 @@
 
 Step 1:
 -------
+Create a docker container with a Django app running a SQL database.
+
   - Initialize a project named "web-apps" using uv.
    ```shell
     uv init web-apps
@@ -28,8 +30,6 @@ Step 1:
   ```shell
     docker compose up --build
   ```
-Step 1.5
--------
 
 ```
 cp .env.template .env
@@ -43,6 +43,8 @@ source .envrc
 
 Step 2:
 -------
+Deploy preferably on Azure.
+
   - Create an azure account with free plan. and login through terminal.
   ```shell 
   az login```
