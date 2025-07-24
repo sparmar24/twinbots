@@ -82,11 +82,11 @@ WSGI_APPLICATION = "coresite.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "DB_NAME": os.environ.get("pg_name"),
-        "DB_USER": os.environ.get("pg_user"),
-        "DB_PASSWORD": os.environ.get("pg_password"),
-        "DB_HOST": os.environ.get("pg_host", "db"),
-        "DB_PORT": os.environ.get("pg_port", "5432"),
+        "NAME": os.environ.get("PG_USER"),
+        "USER": os.environ.get("PG_USER"),
+        "PASSWORD": os.environ.get("PG_PASSWORD"),
+        "HOST": os.environ.get("PG_HOST"),
+        "PORT": os.environ.get("PG_PORT"),
     }
 }
 

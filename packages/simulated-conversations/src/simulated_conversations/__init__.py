@@ -47,15 +47,15 @@ def conversation():
 
 
 def main():
-    for i in range(100):
+    for _ in range(10):
         answer = conversation()
 
         conn = psycopg.connect(
-            dbname=os.environ.get("DB_NAME"),
-            user=os.environ.get("DB_USER"),
-            password=os.environ.get("DB_PASSWORD"),
-            host=os.environ.get("DB_HOST"),
-            port=os.environ.get("DB_PORT"),
+            dbname=os.environ.get("PG_USER"),
+            user=os.environ.get("PG_USER"),
+            password=os.environ.get("PG_PASSWORD"),
+            host=os.environ.get("PG_HOST"),
+            port=os.environ.get("PG_PORT"),
         )
         # create table if not exis
         cursor = conn.cursor()

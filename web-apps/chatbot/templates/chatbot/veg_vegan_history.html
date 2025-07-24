@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chatbot - Top three favorite Foods</title>
+    <title>Chatbot - Simulated conversations</title>
     <style>
         body {
             background-color: #121212;
@@ -28,7 +28,7 @@
 
 </head>
 <body>
-    <h2>vegetarian or vegan</h2>
+    <h2>Simulated conversations</h2>
     <div>
         {% for msg in chat_history %}
             <p><strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}</p>

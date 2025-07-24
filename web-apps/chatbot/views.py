@@ -3,6 +3,7 @@ from openai import OpenAI
 import os
 import psycopg
 from django.http import HttpResponse
+
 from simulated_conversations import chatbotA
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
@@ -53,34 +54,38 @@ def sim_conversations(request):
     uv run sim-conv
     print("Simulated 100 conversations.")
     """
+    messages = []  # 0.0000001 s
     if request.method == "GET":
-        return render(
-            request,
-            "chatbot/hundred_sim_conversations.html",
-            context={"messages": ["Shall we simulate 100 conversations?"]},
-        )
+        messages.append("Shall we simulate 100 conversations?")
 
     if request.method == "POST":
-        messages = []  # 0.0000001 s
+        messages.append("Simulated 100 conversations.")
         subprocess.run(["uv", "run", "sim-conv"])  # 10 s
         subprocess.run(
-            ["uv", "run", "dbt", "run", "--select", "tag:conversations"]
+            [
+                "uv",
+                "run",
+                "dbt",
+                "run",
+                "--select",
+                "tag:conversations",
+            ]
         )  # 10 s
-        return render(
-            request,
-            "chatbot/hundred_sim_conversations.html",
-            context={"messages": ["Simulated 100 conversations."]},
-        )
+    return render(
+        request,
+        "chatbot/hundred_sim_conversations.html",
+        context={"messages": messages},
+    )
 
 
 def chat_veg_vegan(request):
     # Connect to the PostgreSQL database
     conn = psycopg.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
+        dbname=os.getenv("PG_USER"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"),
     )
     cursor = conn.cursor()
     # Fetch chat history from the database

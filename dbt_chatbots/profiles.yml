@@ -1,12 +1,12 @@
 dbt_chatbots:
+  target: dev
   outputs:
     dev:
-      dbname: mydb
-      host: db
-      pass: mypassword
+      dbname: "{{ env_var('PG_USER') }}"
+      user: "{{ env_var('PG_USER') }}"
+      host: "{{ env_var('PG_HOST') }}"
+      pass: "{{ env_var('PG_PASSWORD') }}"
       port: 5432
       schema: public
       threads: 2
       type: postgres
-      user: myuser
-  target: dev
