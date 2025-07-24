@@ -11,7 +11,7 @@ jobs:
   
     steps:
       - name: source env variables
-        run: source .envrc
+        run: source ../../.envrc
 
       - name: build docker image
         run: docker compose build
