@@ -9,8 +9,8 @@ variable "openai_api_key" {
 }
 
 variable "azsubscription_id" {
-  description = "PostgreSQL DB port"
-  type        = string 
+  description = "Azure Subscription id"
+  type        = string
 }
 
 variable "az_location" {
@@ -18,6 +18,7 @@ variable "az_location" {
   description = "region for resources"
   type        = string
 }
+
 variable "pg_user" {
   description = "PostgreSQL admin user"
   type        = string
@@ -40,5 +41,5 @@ variable "pg_name" {
 
 variable "pg_port" {
   description = "PostgreSQL DB port"
-  type        = number 
+  type        = number
 }

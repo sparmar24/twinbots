@@ -4,10 +4,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-
+      POSTGRES_DB: ${pg_name} 
+      POSTGRES_USER: ${pg_user}
+      POSTGRES_PASSWORD: ${pg_password} 
+    ports:
+      - "5432"
   web:
     build:
       context: .
@@ -20,9 +21,9 @@ services:
     depends_on:
       - db
     environment:
-      DB_NAME: mydb
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
+      DB_NAME: ${pg_name}
+      DB_USER: ${pg_user}
+      DB_PASSWORD: ${pg_password}
       DB_HOST: db
       DB_PORT: 5432
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}

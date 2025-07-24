@@ -26,7 +26,11 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "django-web-app.azurewebsites.net",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -71,17 +75,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "coresite.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "mydb",
-        "USER": "myuser",
-        "PASSWORD": "mypassword",
-        "HOST": "db",
-        "PORT": "5432",
+        "DB_NAME": os.environ.get("pg_name"),
+        "DB_USER": os.environ.get("pg_user"),
+        "DB_PASSWORD": os.environ.get("pg_password"),
+        "DB_HOST": os.environ.get("pg_host", "db"),
+        "DB_PORT": os.environ.get("pg_port", "5432"),
     }
 }
 
