@@ -4,16 +4,20 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
   
     steps:
-      - name: source env variables
-        run: source ../../.envrc
-
-      - name: build docker image
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Source env variables
+        run: source .envrc
+      - name: Build container images
         run: docker compose build
 
       # - name: tag docekr image to ACR
