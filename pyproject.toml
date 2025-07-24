@@ -11,6 +11,7 @@ dependencies = [
     "openai>=1.97.0",
     "pre-commit>=4.2.0",
     "psycopg[binary]>=3.2.9",
+    "simulated-conversations>=0.1.0",
 ]
 
 [tool.sqlfluff.core]
@@ -24,6 +25,9 @@ exclude_rules = ["layout.indent", "layout.cte_bracket", "layout.select_targets",
 [tool.sqlfluff.rules]
 capitalisation_policy = "lower"
 extended_capitalisation_policy = "lower"
+
+[tool.uv.sources]
+simulated-conversations = { workspace=true}
 
 [tool.uv.workspace]
 members = [

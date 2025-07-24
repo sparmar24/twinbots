@@ -1014,6 +1014,7 @@ dependencies = [
     { name = "openai" },
     { name = "pre-commit" },
     { name = "psycopg", extra = ["binary"] },
+    { name = "simulated-conversations" },
 ]
 
 [package.metadata]
@@ -1024,6 +1025,7 @@ requires-dist = [
     { name = "openai", specifier = ">=1.97.0" },
     { name = "pre-commit", specifier = ">=4.2.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.9" },
+    { name = "simulated-conversations", editable = "packages/simulated-conversations" },
 ]
 
 [[package]]
