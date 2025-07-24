@@ -16,7 +16,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
       - name: Source env variables
-        run: echo $pg_port
+        run: echo "${{pg_port}}" && echo "${{PG_PORT}}"
       - name: Build container images
         run: docker compose build
 
