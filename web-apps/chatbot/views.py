@@ -4,8 +4,10 @@ import os
 import psycopg
 from django.http import HttpResponse
 from simulated_conversations import chatbotA
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def chat_view(request) -> HttpResponse:
     chat_system = {
         "role": "system",

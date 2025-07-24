@@ -26,6 +26,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://django-web-app.azurewebsites.net",
+]
+
 ALLOWED_HOSTS = [
     "django-web-app.azurewebsites.net",
     "localhost",
