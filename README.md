@@ -175,3 +175,10 @@ check tables and database.
 Step 5: 
 -------
 
+
+
+
+
+
+got error related to csrf
+- add csrf exempt in settings.py

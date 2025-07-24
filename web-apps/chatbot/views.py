@@ -5,6 +5,7 @@ import psycopg
 from django.http import HttpResponse
 from simulated_conversations import chatbotA
 from django.views.decorators.csrf import csrf_exempt
+import subprocess
 
 
 @csrf_exempt
@@ -44,6 +45,32 @@ def chat_view(request) -> HttpResponse:
             "bot_reply": bot_reply,
         },
     )
+
+
+def sim_conversations(request):
+    """
+    print("Simulating 100 conversations...")
+    uv run sim-conv
+    print("Simulated 100 conversations.")
+    """
+    if request.method == "GET":
+        return render(
+            request,
+            "chatbot/hundred_sim_conversations.html",
+            context={"messages": ["Shall we simulate 100 conversations?"]},
+        )
+
+    if request.method == "POST":
+        messages = []  # 0.0000001 s
+        subprocess.run(["uv", "run", "sim-conv"])  # 10 s
+        subprocess.run(
+            ["uv", "run", "dbt", "run", "--select", "tag:conversations"]
+        )  # 10 s
+        return render(
+            request,
+            "chatbot/hundred_sim_conversations.html",
+            context={"messages": ["Simulated 100 conversations."]},
+        )
 
 
 def chat_veg_vegan(request):
