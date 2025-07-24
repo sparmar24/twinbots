@@ -14,7 +14,7 @@ jobs:
         run: source .envrc
 
       - name: build docker image
-        run: docker copose build
+        run: docker compose build
 
       # - name: tag docekr image to ACR
       #   uses: docker tag twinbots-web acrtwinbots.azurecr.io/twinbots-web:latest
