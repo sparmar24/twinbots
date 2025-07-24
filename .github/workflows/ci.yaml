@@ -11,10 +11,10 @@ jobs:
   
     steps:
       - name: source env variables
-        uses: source .envrc
+        run: source .envrc
 
       - name: build docker image
-        uses: docker copose build
+        run: docker copose build
 
       # - name: tag docekr image to ACR
       #   uses: docker tag twinbots-web acrtwinbots.azurecr.io/twinbots-web:latest
