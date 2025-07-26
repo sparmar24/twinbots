@@ -8,6 +8,22 @@ services:
       POSTGRES_PASSWORD: ${PG_PASSWORD} 
     ports:
       - ${PG_PORT}
+  migrate:
+    build:
+      context: .
+      dockerfile: Containerfile
+    command: uv run web-apps/manage.py migrate
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: db
+      PG_PORT: ${PG_PORT}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
   web:
     build:
       context: .
@@ -18,7 +34,9 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      migrate:
+        condition: service_completed_successfully
+
     environment:
       PG_USER: ${PG_USER}
       PG_PASSWORD: ${PG_PASSWORD}
