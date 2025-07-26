@@ -19,6 +19,11 @@ variable "az_location" {
   type        = string
 }
 
+variable "pg_user_server" {
+  description = "PostgreSQL name=user@server for app"
+  type        = string
+}
+
 variable "pg_user" {
   description = "PostgreSQL admin user"
   type        = string
@@ -34,12 +39,17 @@ variable "pg_host" {
   type        = string
 }
 
-variable "pg_name" {
-  description = "PostgreSQL DB name"
+variable "pg_server" {
+  description = "PostgreSQL DB server"
   type        = string
 }
 
 variable "pg_port" {
   description = "PostgreSQL DB port"
+  type        = number
+}
+
+variable "pg_version" {
+  description = "PostgreSQL DB version"
   type        = number
 }

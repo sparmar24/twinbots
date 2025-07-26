@@ -4,17 +4,27 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
   
     steps:
-      - name: source env variables
-        run: source ../../.envrc
-
-      - name: build docker image
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Source env variables
+        run: echo "Hello"
+      - name: Source env variables
+        run: echo "${{pg_port}}"
+      - name: Source env variables
+        run: echo "${{PG_PORT}}"
+      - name: Build container images
         run: docker compose build
+      - name: Build container images
+        run: docker ps
 
       # - name: tag docekr image to ACR
       #   uses: docker tag twinbots-web acrtwinbots.azurecr.io/twinbots-web:latest

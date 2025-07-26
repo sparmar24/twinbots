@@ -94,16 +94,16 @@ resource "azurerm_linux_web_app" "django_web_app" {
     }
   }
   app_settings = {
-    DEBUG               = "False"
-    DJANGO_SECRET_KEY   = var.django_secret_key
-    OPENAI_API_KEY      = var.openai_api_key
-    POSTGRESQL_NAME     = var.pg_name
-    POSTGRESQL_USER     = var.pg_user
-    POSTGRESQL_PASSWORD = var.pg_password
-    POSTGRESQL_HOST     = var.pg_host
-    POSTGRESQL_PORT     = var.pg_port
-    WEBSITES_PORT       = "8000"
-    ALLOWED_HOSTS       = "django-web-app.azurewebsites.net"
+    DEBUG             = "False"
+    DJANGO_SECRET_KEY = var.django_secret_key
+    OPENAI_API_KEY    = var.openai_api_key
+    PG_NAME           = var.pg_user_server
+    PG_USER           = var.pg_user
+    PG_PASSWORD       = var.pg_password
+    PG_HOST           = var.pg_host
+    PG_PORT           = var.pg_port
+    WEBSITES_PORT     = "8000"
+    ALLOWED_HOSTS     = "django-web-app.azurewebsites.net"
   }
 
   tags = {
@@ -113,13 +113,13 @@ resource "azurerm_linux_web_app" "django_web_app" {
 
 # PostgresSQL Flexible Server
 resource "azurerm_postgresql_flexible_server" "postgres_twinbots" {
-  name                   = "postgres-twinbots"
+  name                   = var.pg_server
   resource_group_name    = azurerm_resource_group.rg_twinbots.name
   location               = azurerm_resource_group.rg_twinbots.location
   administrator_login    = var.pg_user
   administrator_password = var.pg_password
   create_mode            = "Default"
-  version                = "13"
+  version                = var.pg_version
   zone                   = "1"
   storage_mb             = 32768
   sku_name               = "GP_Standard_D2s_v3"
@@ -132,7 +132,7 @@ resource "azurerm_postgresql_flexible_server" "postgres_twinbots" {
 
 # PostgresSQL Database
 resource "azurerm_postgresql_flexible_server_database" "db_twinbots" {
-  name      = "twinbotsdb"
+  name      = var.pg_user
   server_id = azurerm_postgresql_flexible_server.postgres_twinbots.id
   collation = "C"
   charset   = "UTF8"
