@@ -1,6 +1,9 @@
 # twinbots
 
 
+For quick start, clone the repository and run following commands.
+
+
 Step 1:
 -------
 Create a docker container with a Django app running a SQL database.
@@ -93,37 +96,18 @@ Deploy preferably on Azure.
   ```
   Finally, pushed the docker image to acr and it worked.
 
-  - Create yml files for postgres and django web-app to deploy in kubernetes.
-  
-1) django-deployment.yml
-  - It will run django app inside the cluster and tells kubernetes about which docker image (the one pushed to ACR) to run.
-  how many copies/replicas of the app need to run. And about ports to expose inside the pod/virtual machine.
-
-1) django-service.yml
-  - Service file exposes the django app inside the cluster to make it accessible to other app such as, postgres
-
-1) postgres-deployment.yml
-  - The deployment file sets up the database with environment variables.
-
-1) postgres-service.yml
-  - This service file will expose Postgres to other services, exp: Django app
-
-1) ingress.yml
-  - It exposes the app to the internet.
-
-To route traffic to Django app, we need NGINX Ingress controller on AKS(Azure Kubernetes Service).
 
 Step 3:
 -------
 Create a chatbot who asks the three favourite foods.
 
-  - Create new app named chatbot using
+  - Create new app named chatbot via
   ```shell
-  uv run manage.py startapp app-name 
+  uv run manage.py startapp chatbot 
 ```
   - Add app-name in settings.py under INSTALLED_APPS list.
   ```shell
-    "app-name",
+    "chatbot",
 
 ```
   - In TEMPLATES list, add path to chatbot/templates.
@@ -132,7 +116,7 @@ Create a chatbot who asks the three favourite foods.
 ```
   - In views.py, create a chatbot and return render.
   - Create an html file named "templates/chat.html" in chatbot folder.
-  - Add chatbot urls to coresite/urls.py.
+  - Add chatbot urls to project dir urls -> coresite/urls.py.
 
  
  Step 4: 
@@ -169,16 +153,87 @@ Create a chatbot who asks the three favourite foods.
   docker run -it --rm --network twinbots_default postgres:15 psql -h db -U myuser -d mydb -p 5432
   ```
 - the prompt will be like, mydb#>
-check tables and database.
+check tables in database if created or not.
 
+For Azure cloud, add package simulated-conversations via subprocess in chatbot.views.py
+```shell
+        subprocess.run(["uv", "run", "sim-conv"])  # 10 s
+```
 
 Step 5: 
 -------
+Create an API endpoint which shows the simulated users that are vegetarian/vegan in those 100 simulated conversations and their top 3 favourite foods
+
+  - Create dbt package to manage sql queries. For that run
+  ```
+shell
+uv run dbt
+```
+A folder with set of files will be created.
+Run sql queries in models dir with .sql files. 
+For Azure cloud, add following command in chatbot.views.py
+```shell
+        subprocess.run(
+            [
+                "uv",
+                "run",
+                "dbt",
+                "run",
+                "--select",
+                "tag:conversations",
+            ]
+        )  # 10 s
+
+```
+Formatted files are created with list of vegetarians or vegans in 100 simulated conversations.
+
+- Define functions in chatbot/views.py, to create endpoint views.
+- Different endpoint views are connected to different html templates.
+- All of them are also included in main project url.py.
+
+Step 6: 
+-------
+Create authentication for this API endpoint and “user” and “password”
+
+- For authentication, Django's default authentication functions are used. 
+
+Create directory "registration" and login.html file.
+
+- One time step,
+- In local,
+```shell
+uv run manage.py migrate
+```
+Create superuser via
+```shell
+uv run manage.py createsuperuser
+```
+- Login to localhost and create normal user with limited access.
 
 
+- For Azure cloud,
+The table auth_user has to be in postgres server to have authentication. It is created via 
+```shell
+uv run manage.py migrate
+```
+Thus auth_user is dumped from local instance to cloud instance as it is not present in cloud postgres database.
+
+The command to dump from source database instance is,
+```shell
+❯ docker exec -t 145045447cd5 pg_dump -U twinbotsdb -d twinbotsdb --data-only -t auth_user  > auth_table_data.sql
+```
+A .sql file is created and stored in target database instance via.
+```shell
+❯ psql -h postgres-twinbots.postgres.database.azure.com -U twinbotsdb -d twinbotsdb -f auth_table_data.sql
+```
+
+Now, everything is working with a new user of limited access.
+
+Final step endpoint view:
+--------------------------
+
+- Go to django-web-app.azurewebsites.net
+A home page will open with login option. Login using "username" and "password".
+Go to 
 
 
-
-
-got error related to csrf
-- add csrf exempt in settings.py
