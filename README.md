@@ -2,7 +2,14 @@
 
 
 For quick start, clone the repository and run following commands.
-
+ 1) source envrc 
+ 1) docker compose build
+ 1) docker tag twinbots-web acrtwinbots.azurecr.io/twinbots-web:latest
+ 1) az login
+ 1) az acr login --name acrtwinbots
+ 1) docker push acrtwinbots.azurecr.io/twinbots-web:latest
+ 1) az webapp restart --name django-web-app --resource-group rg_twinbots
+ 1) Go to webpage: django-web-app.azurewebsites.net and login using "usewrname" and "password"
 
 Step 1:
 -------
@@ -10,7 +17,8 @@ Create a docker container with a Django app running a SQL database.
 
   - Initialize a project named "web-apps" using uv.
    ```shell
-    uv init web-apps
+    uv init twinbots
+mkdir web-apps
   ``` 
   - Install Django
     ```shell
@@ -21,20 +29,12 @@ Create a docker container with a Django app running a SQL database.
   ```shell
     uv run django-admin startproject coresite web-apps
   ```
-  - Create Containerfile using a base image and build.
-  ```shell
-    docker build -t twinbotapi -f Containerfile.
-  ```
-  - Install postgresql daatabase using command line.
-  ```shell
-    sudo apt install postgresql
-  ```
-  - To interact with web app and database, create compose.yml file.
+  - With compose.yaml and Containerfile build image.
   ```shell
     docker compose up --build
   ```
 
-```
+```shell
 cp .env.template .env
 ```
 Set up your environment variables in your `.env`.
@@ -46,11 +46,12 @@ source .envrc
 
 Step 2:
 -------
-Deploy preferably on Azure.
+Deploy on Azure cloud.
 
   - Create an azure account with free plan. and login through terminal.
   ```shell 
-  az login```
+  az login
+```
   - We need to create resource group, kubernetes cluster, azure cluster registry. For that Terraform file is created with all resources in it.
   then, run 
   ```shell
@@ -150,12 +151,12 @@ Create a chatbot who asks the three favourite foods.
   The bash shell will start. Run "uv run sim-conv" there.
   The table will be stored in database and you can check it using,
   ```shell
-  docker run -it --rm --network twinbots_default postgres:15 psql -h db -U myuser -d mydb -p 5432
+  docker run -it --rm --network twinbots_default postgres:16 psql -h db -U myuser -d mydb -p 5432
   ```
 - the prompt will be like, mydb#>
 check tables in database if created or not.
 
-For Azure cloud, add package simulated-conversations via subprocess in chatbot.views.py
+"For Azure cloud", add package simulated-conversations via subprocess in chatbot.views.py
 ```shell
         subprocess.run(["uv", "run", "sim-conv"])  # 10 s
 ```
@@ -165,9 +166,8 @@ Step 5:
 Create an API endpoint which shows the simulated users that are vegetarian/vegan in those 100 simulated conversations and their top 3 favourite foods
 
   - Create dbt package to manage sql queries. For that run
-  ```
-shell
-uv run dbt
+  ```shell
+dbt init
 ```
 A folder with set of files will be created.
 Run sql queries in models dir with .sql files. 
@@ -199,8 +199,7 @@ Create authentication for this API endpoint and “user” and “password”
 
 Create directory "registration" and login.html file.
 
-- One time step,
-- In local,
+- One time step, in local,
 ```shell
 uv run manage.py migrate
 ```
@@ -211,7 +210,7 @@ uv run manage.py createsuperuser
 - Login to localhost and create normal user with limited access.
 
 
-- For Azure cloud,
+- "For Azure cloud",
 The table auth_user has to be in postgres server to have authentication. It is created via 
 ```shell
 uv run manage.py migrate
@@ -220,7 +219,7 @@ Thus auth_user is dumped from local instance to cloud instance as it is not pres
 
 The command to dump from source database instance is,
 ```shell
-❯ docker exec -t 145045447cd5 pg_dump -U twinbotsdb -d twinbotsdb --data-only -t auth_user  > auth_table_data.sql
+❯ docker exec -t containerid pg_dump -U twinbotsdb -d twinbotsdb --data-only -t auth_user  > auth_table_data.sql
 ```
 A .sql file is created and stored in target database instance via.
 ```shell
@@ -234,6 +233,5 @@ Final step endpoint view:
 
 - Go to django-web-app.azurewebsites.net
 A home page will open with login option. Login using "username" and "password".
-Go to 
 
 
