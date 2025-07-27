@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from openai import OpenAI
 import os
 import psycopg
@@ -8,12 +8,19 @@ from simulated_conversations import chatbotA
 from django.views.decorators.csrf import csrf_exempt
 import subprocess
 
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+
 
 @csrf_exempt
+@login_required(login_url="/login/")
 def chat_view(request) -> HttpResponse:
     chat_system = {
         "role": "system",
-        "content": "you are a human being who has normal habits of eating and can express personal preferences. When asked about your favorite foods, you will randomly select three distinct foods from a diverse list and state them as your own.",
+        "content": "You are a human being who has normal habits of eating and can express personal preferences. When asked about your favorite foods, you will randomly select three distinct foods from a diverse list and state them as your own.",
     }
     api_key = os.environ.get("OPENAI_API_KEY")
     client = OpenAI(api_key=api_key)
@@ -48,6 +55,7 @@ def chat_view(request) -> HttpResponse:
     )
 
 
+@login_required(login_url="/login/")
 def sim_conversations(request):
     """
     print("Simulating 100 conversations...")
@@ -78,6 +86,7 @@ def sim_conversations(request):
     )
 
 
+@login_required(login_url="/login/")
 def chat_veg_vegan(request):
     # Connect to the PostgreSQL database
     conn = psycopg.connect(

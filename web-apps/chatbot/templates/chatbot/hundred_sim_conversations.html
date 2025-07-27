@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chatbot - Simulated conversations</title>
+    <title>Chatbot - Top three favorite Foods</title>
     <style>
         body {
             background-color: #121212;
@@ -39,27 +39,26 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px; /* Space between header and chat messages */
+        
         }
     </style>
 
 </head>
 <body>
-        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-link">Logout</button>
-        </form>
-    <h2>Simulated conversations (Vegetarian or Vegan)</h2>
+    <h2>Hi, I am Chatbot-A</h2>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
     <div>
-        {% for msg in chat_history %}
-            <p><strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
-
+        {% for msg in messages %}
+            <p>{{ msg }}
             </p>
         {% endfor %}
     </div>
-    <!-- <form method="POST"> -->
-    <!--     {% csrf_token %} -->
-    <!--     <input type="text" name="user_input" placeholder="Type your message..." required> -->
-    <!--     <button type="submit">Send</button> -->
-    <!-- </form> -->
+    <form method="POST">
+        {% csrf_token %}
+        <button type="Yes">Yes!</button>
+    </form>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chatbot - Simulated conversations</title>
+    <title>Login</title>
     <style>
         body {
             background-color: #121212;
@@ -13,7 +13,17 @@
             color: #ffffff;
             border: 1px solid #333;
             padding: 8px;
-            width: 70%;
+            width: 10%;
+        }
+        button {
+            background-color: #333;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #444;
         }
         form {
             margin-top: 20px;
@@ -41,25 +51,21 @@
             margin-bottom: 20px; /* Space between header and chat messages */
         }
     </style>
-
 </head>
 <body>
-        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-link">Logout</button>
-        </form>
-    <h2>Simulated conversations (Vegetarian or Vegan)</h2>
-    <div>
-        {% for msg in chat_history %}
-            <p><strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
-
-            </p>
-        {% endfor %}
-    </div>
-    <!-- <form method="POST"> -->
-    <!--     {% csrf_token %} -->
-    <!--     <input type="text" name="user_input" placeholder="Type your message..." required> -->
-    <!--     <button type="submit">Send</button> -->
-    <!-- </form> -->
+    <h2>Login</h2>
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-link">Logout</button>
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    {% if user.is_authenticated %}
+        <p>You are already logged in as {{ user.username }}. 
+    {% endif %}
 </body>
 </html>
+

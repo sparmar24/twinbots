@@ -34,15 +34,44 @@
         strong {
             color: #90caf9;
         }
+        /* Style for the logout link */
+        .logout-link {
+            float: right; /* Puts it on the right side */
+            margin-right: 20px; /* Adds some space from the edge */
+            color: #ff6b6b; /* A distinct color for logout */
+            text-decoration: none; /* No underline by default */
+        }
+        .logout-link:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Space between header and chat messages */
+        }
     </style>
 </head>
 <body>
-    <h2>Favorite Foods Chatbot</h2>
+    <div class="header-row">
+        <h2>Favorite Foods Chatbot</h2>
+        {% if user.is_authenticated %}
+            <p>
+                Welcome, {{ user.username }}!
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
+            </p>
+        {% endif %}
+    </div>
+
     <div>
         {% for msg in bot_responses %}
             <p><strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}</p>
         {% endfor %}
     </div>
+
     <form method="POST">
         {% csrf_token %}
         <input type="text" name="user_input" placeholder="Type your message..." required>
