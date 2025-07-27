@@ -47,7 +47,7 @@ def conversation():
 
 
 def main():
-    for _ in range(10):
+    for _ in range(100):
         answer = conversation()
 
         conn = psycopg.connect(
