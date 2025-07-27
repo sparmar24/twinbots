@@ -15,6 +15,13 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 
+def home_view(request):
+    """
+    Renders the minimalist home page with links to other parts of the site.
+    """
+    return render(request, "chatbot/home.html", {})  # Pass an empty context for now
+
+
 @csrf_exempt
 @login_required(login_url="/login/")
 def chat_view(request) -> HttpResponse:
